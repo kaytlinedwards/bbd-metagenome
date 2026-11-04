@@ -1,6 +1,6 @@
 ---
 title: "BBD Metagenome: Binning"
-author: "Your Name"
+author: "Kaytlin Edwards"
 date: "`r Sys.Date()`"
 output:
   github_document:
@@ -17,9 +17,6 @@ knitr::opts_hooks$set(engine = function(options) {
 })
 ```
 
-<!--
-Explain what this step does and why, and copy each command you ran into a
-bash chunk. R chunks run from the top of the repository.
--->
+The assembled DNA sequences were grouped into bins using MetaBAT2. Before running MetaBAT2, the coverage information was obtained from the Flye assembly results, and the contigs were reordered to match this information. MetBAT2 then grouped the contigs based on similarities in their sequence composition and coverage. The analysis produced 71 bins containing ~39.9 million DNA bases in total. Each bin potentially represents DNA from an individual microorganism, However the quality of these bins still needs to be assessed next before it can be used for further analysis. 
 
 Binning of the assembled contigs into genomes with MetaBAT 2. Commands for this step were run in `metabat/`.

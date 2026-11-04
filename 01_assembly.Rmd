@@ -1,6 +1,6 @@
 ---
 title: "BBD Metagenome: Assembly"
-author: "Your Name"
+author: "Kaytlin Edwards"
 date: "`r Sys.Date()`"
 output:
   github_document:
@@ -17,9 +17,8 @@ knitr::opts_hooks$set(engine = function(options) {
 })
 ```
 
-<!--
-Explain what this step does and why, and copy each command you ran into a
-bash chunk. R chunks run from the top of the repository.
--->
+The DNA sequences from the Black Band Disease samples were assembled using Flye (v2.9.6) wich joins overlapping DNA reads into longer sequences/ contigs. These samples were sequenced using Oxford Nanopore technology so the "nano-hq" setting was used. Since the samples contain DNA from multiple microorganisms, the "meta" option was also included. The assembly was run through SLURM, using 12 CPU threads and 20 GB of memory. The input dataset contained ~292.4 million DNA bases. The Flye assembly was successfully completed in ~49 minutes, and generated a 6.5 FASTA file containing the assembled DNA sequences/ contigs. These contigs will be checked and used for binning in the next part of analysis. 
+
+
 
 Assembly of the BBD nanopore reads with Flye. Commands for this step were run in `flye/`.

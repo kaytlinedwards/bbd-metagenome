@@ -16,9 +16,25 @@ knitr::opts_hooks$set(engine = function(options) {
   options
 })
 ```
-
-The DNA sequences from the Black Band Disease samples were assembled using Flye (v2.9.6) wich joins overlapping DNA reads into longer sequences/ contigs. These samples were sequenced using Oxford Nanopore technology so the "nano-hq" setting was used. Since the samples contain DNA from multiple microorganisms, the "meta" option was also included. The assembly was run through SLURM, using 12 CPU threads and 20 GB of memory. The input dataset contained ~292.4 million DNA bases. The Flye assembly was successfully completed in ~49 minutes, and generated a 6.5 FASTA file containing the assembled DNA sequences/ contigs. These contigs will be checked and used for binning in the next part of analysis. 
-
-
+## Step 1: Metagenome Assembly with Flye
+The DNA sequences from the Black Band Disease samples were assembled using Flye (v2.9.6) wich joins overlapping DNA reads into longer sequences/ contigs. These samples were sequenced using Oxford Nanopore technology so the "nano-hq" setting was used. Since the samples contain DNA from multiple microorganisms, the "meta" option was also included. The assembly was run through SLURM, using 12 CPU threads and 20 GB of memory. The input dataset contained ~292.4 million DNA bases. The Flye assembly was successfully completed in ~49 minutes, and generated a FASTA file of approximatley 64.7 MiB, containing the assembled DNA sequences/ contigs. These contigs will be checked and used for binning in the next part of analysis. 
 
 Assembly of the BBD nanopore reads with Flye. Commands for this step were run in `flye/`.
+
+```{bash, eval=FALSE}
+cd ~/bbd-metagenome/flye
+ln -s /pvol/data/metagenome_assembly/bbd_0.1.fastq.gz .
+
+# Flye assembly was submitted using this SLURM script run_flye_bbd.sh
+# Submit assembly job
+sbatch run_flye_bbd.sh
+
+# Check job status and assembly output
+squeue -j 547
+sacct -j 547 --format=JobID,State,Elapsed
+ls -lh bbd/assembly.fasta
+```
+
+```{bash, eval=FALSE}
+flye --nano-hq bbd_0.1.fastq.gz --threads 12 --out-dir bbd --meta
+```

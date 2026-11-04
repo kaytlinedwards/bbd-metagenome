@@ -1,6 +1,6 @@
 ---
 title: "BBD Metagenome: Bin Quality"
-author: "Your Name"
+author: "Kaytlin Edwards"
 date: "`r Sys.Date()`"
 output:
   github_document:
@@ -17,9 +17,37 @@ knitr::opts_hooks$set(engine = function(options) {
 })
 ```
 
-<!--
-Explain what this step does and why, and copy each command you ran into a
-bash chunk. R chunks run from the top of the repository.
--->
+## Step 3: Checking Bin Quality with CheckM
 
-Completeness and contamination of each bin, estimated with CheckM, and selection of the most complete bins for further analysis. Commands for this step were run in `checkm/`.
+After MetaBAT2 grouped the assembled DNA into 71 bins, I extracted `contig_112` from the Flye assembly and added it as a separate bin. This was done to check whether an unbinned DNA sequence contained useful genomic information that MetaBAT2 had excluded, bringing the total to 72 bins. I then used CheckM to assess genome completeness and contamination by examining marker genes. Completeness estimates how much of the expected genome is present, while contamination indicates possible mixing of DNA from different organisms. My CheckM run did not produce a final results file, so I used the workshop's prepared results for the next stage. In these results, `contig_328` had 97.62% completeness and 1.64% contamination, while `metabat.26` had 97.56% completeness and 0.67% contamination. Both appear to be good candidates for further analysis.
+
+```{bash, eval=FALSE}
+
+cd ~/bbd-metagenome/checkm
+
+# Extract an additional contig from the assembly
+samtools faidx ../flye/bbd/assembly.fasta contig_112 > ../metabat/bins_bbd/metabat.72.fa
+
+# Copy bins into CheckM input folder
+cp ../metabat/bins_bbd/*.fa bins_bbd/
+
+# Confirm number of bins
+ls bins_bbd/*.fa | wc -l
+
+# Check SLURM job status
+squeue -u $USER
+
+# Inspect CheckM log
+tail -n 30 ~/bbd-metagenome/checkm/out/checkm.log
+
+# Copy results into project
+cp /pvol/data/mg/bbd/checkm/checkm_results_bbd.txt ~/bbd-metagenome/checkm/
+
+# Inspect CheckM results
+head -n 5 ~/bbd-metagenome/checkm/checkm_results_bbd.txt
+```
+
+```{bash, eval=FALSE}
+# Checkm shell script contains main analysis command
+checkm lineage_wf bins_bbd out -t 6 -x fa -f checkm_results_bbd.txt
+```

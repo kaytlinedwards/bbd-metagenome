@@ -2,7 +2,7 @@
 
 ### Background
 
-This project investigates the organisms associated with Black Band Disease (BBD) in *Acrapora hyacinthis* corals collected from Orpheus Island on the Great Barrier Reef in 2023. Using the DNA sequences obtained via Oxford Nanopore sequencing, we will assemble the metagenome, identify the specific bacteria that is present, and examine their genes and metabolic pathways to better understand their potential contributing roles in the BBD.
+This project investigates the microbial community associated with Black Band Disease (BBD) in *Acrapora hyacinthis* corals collected from Orpheus Island on the Great Barrier Reef in 2023. Black Band Disease is a coral disease involving a complex microbial community that contributes to coral tissue degradation. Using the DNA sequences obtained via Oxford Nanopore sequencing, we will assemble the metagenome, identify the specific bacteria that is present, and examine their genes and metabolic pathways to better understand their potential contributing roles in the BBD.
 
 This analysis was done for [Workshop 4](https://mb5370.bioinformatics.guide/workshop4.html) of the MB5370 Marine Genomics module, at James Cook University in 2026.
 
@@ -36,22 +36,3 @@ Each step has a numbered RMarkdown file at the top of the repository and a folde
 | Metabolic pathways | `06_metabolic_pathways.Rmd` | `minpath/` | MinPath   |
 
 `index.Rmd` joins all six steps into one web page. Knit it to make `index.html`.
-
-```{=html}
-<!--
-Notes on working in this repository (you can delete this once you've read it):
-
-- Every folder the analysis needs is already here, so you won't need mkdir.
-  If a command complains that a folder doesn't exist, run pwd to check where
-  you are.
-- Run commands in the Terminal, then copy them into a bash chunk in the
-  matching .Rmd. Knitting shows bash chunks but doesn't run them again, so
-  long jobs and sbatch submissions won't be repeated.
-- R chunks run from the top of the repository, so give paths like
-  checkm/checkm_results_bbd.txt.
-- Git ignores everything inside the analysis folders except shell scripts
-  and small summary tables (.txt and .tsv files) saved directly in the
-  folder. Reads, assemblies and bins are far too big for git. Never use
-  git add -f to get around this.
--->
-```

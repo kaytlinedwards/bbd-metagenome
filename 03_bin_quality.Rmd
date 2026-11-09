@@ -51,3 +51,20 @@ head -n 5 ~/bbd-metagenome/checkm/checkm_results_bbd.txt
 # Checkm shell script contains main analysis command
 checkm lineage_wf bins_bbd out -t 6 -x fa -f checkm_results_bbd.txt
 ```
+
+## Step 5: Selecting Bins Based on CheckM Results
+```{bash, eval=FALSE}
+cd ~/bbd-metagenome/checkm
+
+# Examine CheckM results
+head -n 20 checkm_results_bbd.txt
+
+# Select bins with greater than 15% completeness
+awk '$13>15 {print $1}' checkm_results_bbd.txt > bbd_topbins.txt
+
+# Check selected bins
+wc -l bbd_topbins.txt
+head bbd_topbins.txt
+```
+
+After reveiwing the completeness of the 72 bins using checkM, I selected bins with over 15% completeness for further analysis. The completeness estimates how much of a microorganisms genome was recovered during assembly and binning. I used awk to filter completeness values in column 13 and save the corresponding bin IDs to bbd_topbins.txt. This produced 14 bins to be used for further analysis - contig_328 and metabat .26 had the highest completeness estimates. The next step will be to identify which microorganisms these bins may belong tp. However, some bins remain incomplete but may still contain useful information about the Black Band Disease microbial community. 

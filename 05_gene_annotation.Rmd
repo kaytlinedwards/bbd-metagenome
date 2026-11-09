@@ -1,6 +1,6 @@
 ---
 title: "BBD Metagenome: Gene Annotation"
-author: "Your Name"
+author: "Kaytlin Edwards"
 date: "`r Sys.Date()`"
 output:
   github_document:
@@ -17,9 +17,42 @@ knitr::opts_hooks$set(engine = function(options) {
 })
 ```
 
-<!--
-Explain what this step does and why, and copy each command you ran into a
-bash chunk. R chunks run from the top of the repository.
--->
+# Step 7: Gene Annotation with Prokka
 
-Gene prediction and annotation of the most complete bins with Prokka. Commands for this step were run in `prokka/`.
+Prokka was used to identify genes within the 14 selected metagenomic bins and predict their possible functions. It does this by comparing the identified gene sequences with previously characterised genes and their known functions. This provides a better understanding about what microorganisms, associated with black band disease, may be capable of doing. 
+
+```{bash, eval=FALSE}
+# Test Prokka on one selected bin
+cd ~/bbd-metagenome/prokka
+
+bin=metabat.5
+prokka --cpus 2 --outdir $bin --prefix $bin ../metabat/bins_bbd/${bin}.fa
+
+# Examine the annotation files
+ls metabat.5
+```
+
+## Annotating All Selected Bins
+
+After Prokka was successfully tested on one bin, a SLURM job was submitted to identify and annotate genes across all 14 selected metagenomic bins.
+
+```{bash, eval=FALSE}
+# Submit Prokka job
+cd ~/bbd-metagenome/prokka
+sbatch run_prokka.sh
+
+# Check job status
+squeue -u $USER
+```
+
+```{bash, eval=FALSE}
+# Check Prokka job completion
+sacct -j 624 --format=JobID,State,ExitCode
+
+# Examine annotation results
+cd ~/bbd-metagenome/prokka
+ls metabat.26
+head -n 10 metabat.26/metabat.26.tsv
+```
+
+Prokka was used to identify genes in the 14 metagenomic bins. The Prokka analysis completed successfully and produced annotation files that contain predicted gene names and function. Some genes were labelled as hypothetical proteins because their function could not be determined. 

@@ -1,0 +1,67 @@
+BBD Metagenome: Taxonomy
+================
+Kaytlin Edwards
+2026-11-09
+
+GTDB-Tk was used to classify the 14 selected metagenome bins by
+comparing their genome sequences with the Genome Taxonomy Database. The
+selected bins were copied into the GTDB-Tk genomes folder, and the
+classification analysis was conducted through SLURM. The SLURM
+classifications were examined to identify potential microbial groups
+associated with black band disease.
+
+## Step 6: Taxonomic Classification with GTDB-Tk
+
+``` bash
+cd ~/bbd-metagenome/gtdbtk
+
+# Check genome folder
+ls -ld genomes
+
+# Display selected bin IDs
+while read bin; do echo "$bin"; done < ../checkm/bbd_topbins.txt
+
+# Check paths to selected genome files
+while read bin; do echo "../metabat/bins_bbd/${bin}.fa"; done < ../checkm/bbd_topbins.txt
+
+# Copy selected bins into the GTDB-Tk genomes folder
+while read bin; do cp "../metabat/bins_bbd/${bin}.fa" genomes/; done < ../checkm/bbd_topbins.txt
+
+# Copy contig_328 separately because it was stored in the CheckM folder
+cp ../checkm/bins_bbd/contig_328.fa genomes/
+
+# Confirm all 14 genome files are present
+ls genomes
+ls genomes/*.fa | wc -l
+```
+
+``` bash
+# Submit GTDB-Tk classification through SLURM
+cd ~/bbd-metagenome/gtdbtk
+sbatch run_gtdbtk.sh
+
+# Check job status
+squeue -u $USER
+```
+
+``` bash
+# Check GTDB-Tk job completion
+sacct -j 616 --format=JobID,State,ExitCode
+
+# Examine taxonomic classification results
+cd ~/bbd-metagenome/gtdbtk
+ls -lh out/gtdbtk.bac120.summary.tsv
+head -n 5 out/gtdbtk.bac120.summary.tsv
+```
+
+``` bash
+# Save GTDB-Tk classification results
+cd ~/bbd-metagenome/gtdbtk
+cp out/gtdbtk.bac120.summary.tsv .
+```
+
+The taxonomic results varied across the 14 selected bins. Some bins
+could be assigned to bacterial groups - including the family
+Desulfovibrionaceae - and others remain unclassified.These results give
+insight about the microbial community associated with black band
+disease, but not all bins could be identified with certainty.

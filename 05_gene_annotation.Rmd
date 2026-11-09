@@ -55,4 +55,4 @@ ls metabat.26
 head -n 10 metabat.26/metabat.26.tsv
 ```
 
-Prokka was used to identify genes in the 14 metagenomic bins. The Prokka analysis completed successfully and produced annotation files that contain predicted gene names and function. Some genes were labelled as hypothetical proteins because their function could not be determined. 
+The Prokka analysis completed successfully and produced annotation files for the 14 bibns that contain predicted gene names and function. These included predicted genes with known functions, as well as hypothetical proteins because their function could not be determined. 

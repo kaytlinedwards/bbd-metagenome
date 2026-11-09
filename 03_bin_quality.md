@@ -1,0 +1,81 @@
+BBD Metagenome: Bin Quality
+================
+Kaytlin Edwards
+2026-11-09
+
+## Step 3: Checking Bin Quality with CheckM
+
+After MetaBAT2 grouped the assembled DNA into 71 bins, I extracted
+`contig_112` from the Flye assembly and added it as a separate bin. This
+was done to check whether an unbinned DNA sequence contained useful
+genomic information that MetaBAT2 had excluded, bringing the total to 72
+bins. I then used CheckM to assess genome completeness and contamination
+by examining marker genes. Completeness estimates how much of the
+expected genome is present, while contamination indicates possible
+mixing of DNA from different organisms. My CheckM run did not produce a
+final results file, so I used the workshop’s prepared results for the
+next stage. In these results, `contig_328` had 97.62% completeness and
+1.64% contamination, while `metabat.26` had 97.56% completeness and
+0.67% contamination. Both appear to be good candidates for further
+analysis.
+
+``` bash
+
+cd ~/bbd-metagenome/checkm
+
+# Extract an additional contig from the assembly
+samtools faidx ../flye/bbd/assembly.fasta contig_112 > ../metabat/bins_bbd/metabat.72.fa
+
+# Copy bins into CheckM input folder
+cp ../metabat/bins_bbd/*.fa bins_bbd/
+
+# Confirm number of bins
+ls bins_bbd/*.fa | wc -l
+
+# Submit CheckM analysis
+sbatch run_checkm_bbd.sh
+
+# Check SLURM job status
+squeue -u $USER
+
+# Inspect CheckM log
+tail -n 30 ~/bbd-metagenome/checkm/out/checkm.log
+
+# Copy results into project
+cp /pvol/data/mg/bbd/checkm/checkm_results_bbd.txt ~/bbd-metagenome/checkm/
+
+# Inspect CheckM results
+head -n 5 ~/bbd-metagenome/checkm/checkm_results_bbd.txt
+```
+
+``` bash
+# Checkm shell script contains main analysis command
+checkm lineage_wf bins_bbd out -t 6 -x fa -f checkm_results_bbd.txt
+```
+
+## Step 5: Selecting Bins Based on CheckM Results
+
+``` bash
+cd ~/bbd-metagenome/checkm
+
+# Examine CheckM results
+head -n 20 checkm_results_bbd.txt
+
+# Select bins with greater than 15% completeness
+awk '$13>15 {print $1}' checkm_results_bbd.txt > bbd_topbins.txt
+
+# Check selected bins
+wc -l bbd_topbins.txt
+head bbd_topbins.txt
+```
+
+After reveiwing the completeness of the 72 bins using checkM, I selected
+bins with over 15% completeness for further analysis. The completeness
+estimates how much of a microorganisms genome was recovered during
+assembly and binning. I used awk to filter completeness values in column
+13 and save the corresponding bin IDs to bbd_topbins.txt. This produced
+14 bins to be used for further analysis - contig_328 and metabat .26 had
+the highest completeness estimates. The next step will be to identify
+which microorganisms these bins may belong tp. However, some bins remain
+incomplete but may still contain useful information about the Black Band
+Disease microbial community.

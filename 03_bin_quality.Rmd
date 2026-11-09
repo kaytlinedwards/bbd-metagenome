@@ -34,6 +34,9 @@ cp ../metabat/bins_bbd/*.fa bins_bbd/
 # Confirm number of bins
 ls bins_bbd/*.fa | wc -l
 
+# Submit CheckM analysis
+sbatch run_checkm_bbd.sh
+
 # Check SLURM job status
 squeue -u $USER
 

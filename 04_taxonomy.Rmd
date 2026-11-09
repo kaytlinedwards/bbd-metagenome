@@ -16,6 +16,7 @@ knitr::opts_hooks$set(engine = function(options) {
   options
 })
 ```
+GTDB-Tk was used to classify the 14 selected metagenome bins by comparing their genome sequences with the Genome Taxonomy Database. The selected bins were copied into the GTDB-Tk genomes folder, and the classification analysis was conducted through SLURM. The SLURM classifications were examined to identify potential microbial groups associated with black band disease.
 
 ## Step 6: Taxonomic Classification with GTDB-Tk
 ```{bash, eval=FALSE}
@@ -66,4 +67,4 @@ cd ~/bbd-metagenome/gtdbtk
 cp out/gtdbtk.bac120.summary.tsv .
 ```
 
-GTDBTk was used to identify the microorganisms represented by the 14 selected metabenomic bins. Some bins could be assigned to bacterial groups - including the family Desulfovibrionaceae - and others remain unclassified.These results give insight about the microbial community associates with black band disease, but not all bins could be identified with certainty. 
+The taxonomic results varied across the 14 selected bins. Some bins could be assigned to bacterial groups - including the family Desulfovibrionaceae - and others remain unclassified.These results give insight about the microbial community associated with black band disease, but not all bins could be identified with certainty. 
